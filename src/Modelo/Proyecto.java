@@ -13,30 +13,26 @@ public class Proyecto {
 
     private String descripcion;
 
-    private LocalDate fechaInicio;
+    private LocalDate fecha_Inicio;
     
     private Boolean estado;
-    
-    private List<Tarea> tareas;
 
     public Proyecto() {
     }
 
-    public Proyecto(int id_Proyecto, String nombre, String descripcion, LocalDate fechaInicio, Boolean estado) {
+    public Proyecto(int id_Proyecto, String nombre, String descripcion, LocalDate fecha_Inicio, Boolean estado) {
         this.id_Proyecto = id_Proyecto;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.fechaInicio = fechaInicio;
+        this.fecha_Inicio = fecha_Inicio;
         this.estado = estado;
-        this.tareas = new ArrayList<>();
     }
 
-    public Proyecto(String nombre, String descripcion, LocalDate fechaInicio, Boolean estado, List<Tarea> tareas) {
+    public Proyecto(String nombre, String descripcion, LocalDate fecha_Inicio, Boolean estado) {
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.fechaInicio = fechaInicio;
+        this.fecha_Inicio = fecha_Inicio;
         this.estado = estado;
-        this.tareas = tareas;
     }
 
     public int getId_Proyecto() {
@@ -64,11 +60,11 @@ public class Proyecto {
     }
 
     public LocalDate getFechaInicio() {
-        return fechaInicio;
+        return fecha_Inicio;
     }
 
-    public void setFechaInicio(LocalDate fechaInicio) {
-        this.fechaInicio = fechaInicio;
+    public void setFechaInicio(LocalDate fecha_Inicio) {
+        this.fecha_Inicio = fecha_Inicio;
     }
 
     public Boolean getEstado() {
@@ -78,64 +74,56 @@ public class Proyecto {
     public void setEstado(Boolean estado) {
         this.estado = estado;
     }
-
-    public List<Tarea> getTareas() {
-        return tareas;
-    }
-
-    public void setTareas(List<Tarea> tareas) {
-        this.tareas = tareas;
-    }
     
     //Los usuarios podrán crear nuevos proyectos : Crear proyecto.
     public void crearProyecto() {
     
-    System.out.println("Id del Proyecto: " + id_Proyecto);    
-    System.out.println("Proyecto creado: " + nombre);
-    System.out.println("Descripción Proyecto: " + descripcion);
-    System.out.println("Fecha de inicio: " + fechaInicio);
+    //System.out.println("Id del Proyecto: " + id_Proyecto);    
+    //System.out.println("Proyecto creado: " + nombre);
+    //System.out.println("Descripción Proyecto: " + descripcion);
+    //System.out.println("Fecha de inicio: " + fecha_Inicio);
     
-    if(estado){
-      System.out.println("Proyecto Activo");  
-    }else{
-      System.out.println("Proyecto Inactivo"); 
-    }
+    //if(estado){
+      //System.out.println("Proyecto Activo");  
+    //}else{
+      //System.out.println("Proyecto Inactivo"); 
+    //}
     
-    Tarea tarea1 = new Tarea("Crear una Base de Datos",LocalDate.now(),null,false,1,1);
-    Tarea tarea2 = new Tarea("Proyecto en Netbeans",LocalDate.now(),null,false,2,2);
-    Tarea tarea3 = new Tarea("Desarrollo de todas las clases principales del dominio (ABM)",LocalDate.now(),null,true,3,3);
+    //Tarea tarea1 = new Tarea("Crear una Base de Datos",LocalDate.now(),null,false,1);
+    //Tarea tarea2 = new Tarea("Proyecto en Netbeans",LocalDate.now(),null,false,2);
+    //Tarea tarea3 = new Tarea("Desarrollo de todas las clases principales del dominio (ABM)",LocalDate.now(),null,true,3);
     
-    tareas.add(tarea1);
-    tareas.add(tarea2);
-    tareas.add(tarea3);
+    //tareas.add(tarea1);
+    //tareas.add(tarea2);
+    //tareas.add(tarea3);
     
-    this.estado= true;
+    //this.estado= true;
     
-    informeProyecto();
+    //informeProyecto();
     } 
     
-    private void informeProyecto() {
-        System.out.println("\nDetalle Completo del Proyecto: " + id_Proyecto);
-        System.out.println("Nombre: " + nombre);
-        System.out.println("Descripción: " + descripcion);
-        System.out.println("Fecha de inicio: " + fechaInicio);
-        System.out.println("Estado: " + (estado ? "Activo" : "Inactivo"));
+    //private void informeProyecto() {
+        //System.out.println("\nDetalle Completo del Proyecto: " + id_Proyecto);
+        //System.out.println("Nombre: " + nombre);
+        //System.out.println("Descripción: " + descripcion);
+        //System.out.println("Fecha de inicio: " + fecha_Inicio);
+        //System.out.println("Estado: " + (estado ? "Activo" : "Inactivo"));
         
-        System.out.println("Tareas asignadas:");
+        //System.out.println("Tareas asignadas:");
         
-        for(int i=0;i<tareas.size();i++){
+        //for(int i=0;i<tareas.size();i++){
         
-        Tarea tarea = tareas.get(i);
-        System.out.println("- " + tarea.getNombre());
+        //Tarea tarea = tareas.get(i);
+        //System.out.println("- " + tarea.getNombre());
         
-      }
+      //}
         
-    }
+    //}
 
-    @Override
-    public String toString() {
-        return "~Proyecto~\n" + "Id_Proyecto: " + id_Proyecto + " |Nombre: " + nombre + " |Descripcion: " + descripcion + " |Fecha de Inicio: " + fechaInicio + " |Estado: " + estado + " |Tareas: " + tareas;
-    }
+    //@Override
+    //public String toString() {
+        //return "~Proyecto~\n" + "Id_Proyecto: " + id_Proyecto + " |Nombre: " + nombre + " |Descripcion: " + descripcion + " |Fecha Inicio: " + fecha_Inicio + " |Estado: " + estado + " |Tareas: " + tareas;
+    //}
     
     
 }

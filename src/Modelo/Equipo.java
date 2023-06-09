@@ -25,7 +25,7 @@ public class Equipo {
         this.FechaCreacion = FechaCreacion;
         this.estado = estado;
     }
-
+    
     public int getId_Proyecto() {
         return id_Proyecto;
     }
