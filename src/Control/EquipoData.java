@@ -27,7 +27,7 @@ public class EquipoData {
     }
 
     //creacion de equipos.
-    public void guardarEquipo(Equipo equipo) {
+    public void crearEquipo(Equipo equipo) {//null,5,'Dinamita','2023-06-13',1
 
         String sql = "INSERT INTO equipo(Id_Proyecto, Nombre, Fecha_Creacion, Estado) VALUES (?,?,?,?)";
         try {
@@ -43,7 +43,7 @@ public class EquipoData {
             ResultSet rs = ps.getGeneratedKeys();
 
             if (rs.next()) {
-                equipo.setId_Proyecto(1);
+                equipo.setId_Equipo(rs.getInt(1));
                 JOptionPane.showMessageDialog(null, "El equipo se creo correctamente.");
             } else {
                 JOptionPane.showMessageDialog(null, "No se pudo crear el Equipo.");

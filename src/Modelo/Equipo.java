@@ -25,6 +25,13 @@ public class Equipo {
         this.FechaCreacion = FechaCreacion;
         this.estado = estado;
     }
+
+    public Equipo(int id_Proyecto, String nombre, LocalDate FechaCreacion, Boolean estado) {
+        this.id_Proyecto = id_Proyecto;
+        this.nombre = nombre;
+        this.FechaCreacion = FechaCreacion;
+        this.estado = estado;
+    }
     
     public int getId_Proyecto() {
         return id_Proyecto;

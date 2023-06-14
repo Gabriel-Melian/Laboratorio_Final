@@ -12,6 +12,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -58,5 +61,42 @@ public class ProyectoData {
         }
         
     }
+    
+    //Consultar proyectos y tareas: Los usuarios podrán ver la lista de proyectos y sus respectivas
+    //tareas, así como filtrar las tareas por estado y miembro del equipo.
+    public ArrayList<Proyecto> consultarProyectos(int id_proyecto) {
+        
+        Proyecto proyecto = null;
+        ArrayList<Proyecto> proyectos = new ArrayList<>();
+        String sql = "SELECT * FROM proyecto WHERE Id_Proyecto=?";
+        
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            
+            ps.setInt(1,id_proyecto);
+            
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {//Nombre, Descripcion, Fecha_Inicio, Estado.
+                proyecto = new Proyecto();
+                proyecto.setId_Proyecto(rs.getInt("Id_Proyecto"));
+                proyecto.setNombre(rs.getString("Nombre"));
+                proyecto.setDescripcion(rs.getString("Descripcion"));
+                proyecto.setFechaInicio(rs.getDate("Fecha_Inicio").toLocalDate());
+                proyecto.setEstado(rs.getBoolean("Estado"));
+                proyectos.add(proyecto);
+            }
+            else {
+                System.out.println("Alumno no encontrado.");
+            }
+            ps.close();
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Proyecto " + ex.getMessage());
+        }
+        return proyectos;
+        
+    }
+    
     
 }

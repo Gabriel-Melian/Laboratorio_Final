@@ -23,6 +23,12 @@ public class Comentarios {
         this.id_Tarea = id_Tarea;
     }
 
+    public Comentarios(String comentario, LocalDate FechaAvance, int id_Tarea) {
+        this.comentario = comentario;
+        this.FechaAvance = FechaAvance;
+        this.id_Tarea = id_Tarea;
+    }
+
     public int getId_Comentario() {
         return id_Comentario;
     }

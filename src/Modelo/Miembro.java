@@ -22,6 +22,14 @@ public class Miembro {
         this.nombre = nombre;
         this.estado = estado;
     }
+
+    public Miembro(int DNI, String apellido, String nombre, Boolean estado) {
+        this.DNI = DNI;
+        this.apellido = apellido;
+        this.nombre = nombre;
+        this.estado = estado;
+    }
+    
     public int getId_Miembro() {
         return id_Miembro;
     }
