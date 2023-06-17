@@ -120,10 +120,10 @@ public class Proyecto {
         
     //}
 
-    //@Override
-    //public String toString() {
-        //return "~Proyecto~\n" + "Id_Proyecto: " + id_Proyecto + " |Nombre: " + nombre + " |Descripcion: " + descripcion + " |Fecha Inicio: " + fecha_Inicio + " |Estado: " + estado + " |Tareas: " + tareas;
-    //}
+    @Override
+    public String toString() {
+       return nombre;
+    }
     
     
 }
