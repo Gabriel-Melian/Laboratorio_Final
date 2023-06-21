@@ -236,18 +236,39 @@ public class ViewProyectos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jtDescripProyectActionPerformed
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
-        String nombre = jtNombreProyecto.getText();
-        String descripcion = jtDescripProyect.getText();
         
-        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
-        String fecha = formatoFecha.format(jdFechaInicio.getDate());
-        LocalDate fechaInicio = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        
-        Proyecto proyecto = new Proyecto(nombre, descripcion,fechaInicio,true);
-        
-        ProyectoData proyectoData= new ProyectoData();
-        
-        proyectoData.crearProyectos(proyecto);
+        try {
+            String nombre = jtNombreProyecto.getText();
+            String descripcion = jtDescripProyect.getText();
+            
+            if (nombre.isEmpty() || descripcion.isEmpty() || jdFechaInicio.getDate() == null) {
+                JOptionPane.showMessageDialog(this, "Campos incompletos.");
+                return;
+            }
+
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
+            String fecha = formatoFecha.format(jdFechaInicio.getDate());
+            LocalDate fechaInicio = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+            Proyecto proyecto = new Proyecto(nombre, descripcion,fechaInicio,true);
+
+            ProyectoData proyectoData= new ProyectoData();
+            
+            proyectoData.crearProyectos(proyecto);
+            
+            if (proyecto != null) {
+                jtNombreProyecto.setText(proyecto.getNombre());
+                jtDescripProyect.setText(proyecto.getDescripcion());
+                jdFechaInicio.setDate(Date.valueOf(proyecto.getFechaInicio()));
+            }
+            else {
+                jtNombreProyecto.requestFocus();
+            }
+            
+        }catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Error.");
+            jtNombreProyecto.requestFocus();
+        }
         
     }//GEN-LAST:event_jbGuardarActionPerformed
 

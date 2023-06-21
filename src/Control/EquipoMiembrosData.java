@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -28,7 +29,7 @@ public class EquipoMiembrosData {
     
     public void crearEquipoMiembros(EquipoMiembros em) {
         
-        String sql = "INSERT INTO equipo_miembros(Fecha_Incoporacion, Id_Equipo, Id_Miembro) VALUES (?,?,?)";
+        String sql = "INSERT INTO equipo_miembros(Fecha_Incorporacion, Id_Equipo, Id_Miembro) VALUES (?,?,?)";
         
         try {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -54,6 +55,42 @@ public class EquipoMiembrosData {
             JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Equipo_Miembros " + ex.getMessage());
         }
         
+    }
+    
+    public ArrayList<EquipoMiembros> consultarEquipoMiembros() {
+
+        ArrayList<EquipoMiembros> equipomiembro = new ArrayList<>();
+        String sql = "SELECT * FROM `equipo_miembros` WHERE ?";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setInt(1, 1);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                do {
+                    EquipoMiembros equipom = new EquipoMiembros();
+
+
+                      equipom.setId_MiembroEq(rs.getInt("Id_MiembroEq"));
+                      equipom.setFechaIncorporacion(rs.getDate("Fecha_Incorporacion").toLocalDate());
+                      equipom.setId_Equipo(rs.getInt("Id_Equipo"));
+                      equipom.setId_Miembro(rs.getInt("Id_Miembro"));
+                      equipomiembro.add(equipom);
+
+                } while (rs.next());
+            } else {
+                System.out.println("EquipoMiembro no encontrado.");
+            }
+            ps.close();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla EquipoMiembro " + ex.getMessage());
+        }
+        return equipomiembro;
+
     }
     
 }

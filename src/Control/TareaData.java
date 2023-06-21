@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -64,7 +65,7 @@ public class TareaData {
     //cada proyecto. Cada tarea debe estar asociada a un proyecto y a un miembro del equipo.
     public void asignarTarea(int id_Tarea, int id_em) {
         
-        String sql = "UPDATE tarea SET Id_MiembrosEq=? WHERE Id_Tarea=?";
+        String sql = "UPDATE tarea SET Id_MiembroEq=? WHERE Id_Tarea=?";
         
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -147,7 +148,143 @@ public class TareaData {
         return tarea;
     }
     
+    public ArrayList<Tarea> consultarTareas(String nombre) {
+        
+        String sql = "SELECT tarea.nombre,tarea.Fecha_Creacion,tarea.Fecha_Cierre,tarea.Id_MiembroEq \n" +
+                        "FROM proyecto, equipo, equipo_miembros, tarea\n" +
+                        "WHERE proyecto.Nombre = ? AND proyecto.Id_Proyecto = equipo.Id_Proyecto\n" +
+                        "AND equipo.Id_Equipo = equipo_miembros.Id_Equipo\n" +
+                        "AND equipo_miembros.Id_MiembroEq = tarea.Id_MiembroEq";
+        
+        ArrayList<Tarea> tareas = new ArrayList<>();
+        Tarea tarea = null;
+        
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            
+            ps.setString(1, nombre);
+            
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                tarea = new Tarea();
+                tarea.setId_Tarea(rs.getInt("Id_Tarea"));
+                tarea.setNombre(rs.getString("Nombre"));
+                tarea.setFechaCreacion(rs.getDate("Fecha_Creacion").toLocalDate());
+                tarea.setFechaCierre(rs.getDate("Fecha_Cierre").toLocalDate());
+                tarea.setEstado(rs.getBoolean("Estado"));
+                tarea.setId_MiembroEq(rs.getInt("Id_MiembroEq"));
+                tareas.add(tarea);
+            }
+            else {
+                System.out.println("Tarea no encontrada.");
+            }
+            ps.close();
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Tarea " + ex.getMessage());
+        }
+        return tareas;
+        
+    }
     
-    
+    public ArrayList<Tarea> BuscarTareas(boolean estado) {//Nuevo
+        ArrayList<Tarea> tarea1 = new ArrayList();
+        Tarea tarea = null;
 
+        String sql = "SELECT * FROM `tarea` WHERE estado=?";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setBoolean(1, estado);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                do {
+                    tarea = new Tarea();
+                    tarea.setId_Tarea(rs.getInt("Id_Tarea"));
+                    tarea.setNombre(rs.getString("Nombre"));
+                    tarea.setFechaCreacion(rs.getDate("Fecha_Creacion").toLocalDate());
+                    tarea.setFechaCierre(rs.getDate("Fecha_Cierre").toLocalDate());
+                    tarea.setEstado(rs.getBoolean("Estado"));
+                    tarea.setId_MiembroEq(rs.getInt("Id_MiembroEq"));
+                    tarea1.add(tarea);
+                } while (rs.next());
+
+            } else {
+                System.out.println("Tarea no encontrada.");
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Tarea " + ex.getMessage());
+        }
+        return tarea1;
+    }
+    
+    public ArrayList<Tarea> mostrarTODASTareas() {
+        
+        ArrayList<Tarea> tareas = new ArrayList<>();
+        String sql = "SELECT * FROM `tarea` WHERE 1";
+        Tarea tarea = null;
+        
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                do {
+                    tarea = new Tarea();
+                    tarea.setId_Tarea(rs.getInt("Id_Tarea"));
+                    tarea.setNombre(rs.getString("Nombre"));
+                    tarea.setFechaCreacion(rs.getDate("Fecha_Creacion").toLocalDate());
+                    tarea.setFechaCierre(rs.getDate("Fecha_Cierre").toLocalDate());
+                    tarea.setEstado(rs.getBoolean("Estado"));
+                    tarea.setId_MiembroEq(rs.getInt("Id_MiembroEq"));
+                    tareas.add(tarea);
+                } while (rs.next());
+            }
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Tarea " + ex.getMessage());
+        }
+        
+        return tareas;
+    }
+    
+    public ArrayList<Tarea> consultarTareasD() {
+
+        ArrayList<Tarea> tareas = new ArrayList<>();
+        String sql = "SELECT * FROM `tarea` WHERE ?";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setInt(1, 1);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {//Nombre, Descripcion, Fecha_Inicio, Estado.
+                do {
+                    Tarea tarea = new Tarea();
+
+                    
+                    tarea.setId_Tarea(rs.getInt("Id_Tarea"));
+                    tarea.setNombre(rs.getString("Nombre"));
+                    tarea.setFechaCreacion(rs.getDate("Fecha_Creacion").toLocalDate());
+                    tarea.setFechaCierre(rs.getDate("Fecha_Cierre").toLocalDate());
+                    tarea.setEstado(rs.getBoolean("Estado"));
+                    tareas.add(tarea);
+                } while (rs.next());
+            } else {
+                System.out.println("Proyecto no encontrado.");
+            }
+            ps.close();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Proyecto " + ex.getMessage());
+        }
+        return tareas;
+
+    }
+    
 }

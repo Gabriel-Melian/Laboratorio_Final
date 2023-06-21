@@ -5,17 +5,33 @@
  */
 package Vistas;
 
+import Modelo.*;
+import Control.*;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author jesim
  */
 public class ViewConsultarTareasPorMiembroDelEquipo extends javax.swing.JInternalFrame {
 
+    private ProyectoData pd = new ProyectoData();
+    private EquipoData eq = new EquipoData();
+    private MiembroData miem = new MiembroData();
+    private TareaData td = new TareaData();
+    private DefaultTableModel modelo = new DefaultTableModel();
+
     /**
      * Creates new form ViewConsultarTareasPorMiembroDelEquipo
      */
     public ViewConsultarTareasPorMiembroDelEquipo() {
         initComponents();
+        llenarCombobox();
+        armarCabecera();
+        
+        
+
     }
 
     /**
@@ -72,9 +88,13 @@ public class ViewConsultarTareasPorMiembroDelEquipo extends javax.swing.JInterna
         jScrollPane3.setViewportView(jTable3);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel1.setText("Lista de miembros del equipo:");
+        jLabel1.setText("Seleccione el Equipo");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -212,12 +232,15 @@ public class ViewConsultarTareasPorMiembroDelEquipo extends javax.swing.JInterna
     }//GEN-LAST:event_jbSalirActionPerformed
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
-
+        borrarFila();
     }//GEN-LAST:event_jbGuardarActionPerformed
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        LlenarTabla();
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<Equipo> jComboBox1;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
@@ -230,4 +253,51 @@ public class ViewConsultarTareasPorMiembroDelEquipo extends javax.swing.JInterna
     private javax.swing.JButton jbGuardar;
     private javax.swing.JButton jbSalir;
     // End of variables declaration//GEN-END:variables
+
+    private void llenarCombobox() {
+        for (Equipo object : eq.mostrarEquipo()) {
+            jComboBox1.addItem(object);
+        }
+
+    }
+
+    private void armarCabecera() {
+
+        ArrayList<Object> titulos = new ArrayList();
+
+        titulos.add("Nombre");
+        titulos.add("Apellido");
+        titulos.add("Estado");
+        titulos.add("Tarea");
+
+        for (Object tit : titulos) {
+            modelo.addColumn(tit);
+        }
+        jTable3.setModel(modelo);
+    }
+
+    private void LlenarTabla() {
+        borrarFila();
+        Equipo EquipoSelec = (Equipo) jComboBox1.getSelectedItem();
+        ArrayList<Tarea> tareas =miem.ConsultaGeneral(EquipoSelec.getId_Equipo());
+        ArrayList<Miembro>miembro=miem.ConsultarTareasMiembro(EquipoSelec.getId_Equipo());
+        int aux=0;
+        for (Miembro miembro1 : miembro) {
+            modelo.addRow(new Object[]{miembro1.getNombre(),miembro1.getApellido(),miembro1.getEstado(),
+            tareas.get(aux).getNombre()});
+            aux++;
+            
+        }
+           
+        
+    }
+    private void borrarFila() {
+
+        int filas = modelo.getRowCount() - 1;
+
+        for (int i = filas; i >= 0; i--) {
+
+            modelo.removeRow(i);
+        }
+    }
 }

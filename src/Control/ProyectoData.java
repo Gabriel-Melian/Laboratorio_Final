@@ -61,7 +61,7 @@ public class ProyectoData {
     public ArrayList<Proyecto> consultarProyectos() {
 
         ArrayList<Proyecto> proyectos = new ArrayList<>();
-        String sql = "SELECT * FROM `proyecto` WHERE ?";
+        String sql = "SELECT * FROM proyecto WHERE ?";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -82,7 +82,7 @@ public class ProyectoData {
                     proyectos.add(proyecto);
                 } while (rs.next());
             } else {
-                System.out.println("Alumno no encontrado.");
+                System.out.println("Proyecto no encontrado.");
             }
             ps.close();
 

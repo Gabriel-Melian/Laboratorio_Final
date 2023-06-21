@@ -87,7 +87,10 @@ public class Tarea {
 
     @Override
     public String toString() {
-        return "~Tarea~\n" + "Id_Tarea: " + id_Tarea + " |Nombre: " + nombre + " |Fecha de Creacion: " + FechaCreacion + " |Fecha de Cierre: " + FechaCierre + " |Estado: " + estado + " |Id_MiembroEq: " + id_MiembroEq;
+        if (estado) {
+            return nombre + " -En proceso-";//Tarea en actividad...
+        }
+        else return nombre + " -Completada-";//Tarea finalizada.
     }
     
     

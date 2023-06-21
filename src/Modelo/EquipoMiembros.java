@@ -63,7 +63,7 @@ public class EquipoMiembros {
 
     @Override
     public String toString() {
-        return "~EquipoMiembros~\n" + "Id_MiembroEq: " + id_MiembroEq + " |Fecha de Incorporacion: " + fechaIncorporacion + " |Id_Equipo: " + id_Equipo + " |id_Miembro: " + id_Miembro;
+        return "ID " + id_MiembroEq + " |ID-Equipo " + id_Equipo + " |ID-Miembro " + id_Miembro;
     }
     
     

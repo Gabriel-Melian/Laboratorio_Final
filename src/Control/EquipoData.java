@@ -12,6 +12,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -76,6 +79,100 @@ public class EquipoData {
             JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Equipo " + ex.getMessage());
         }
         
+    }
+    
+//    public ArrayList<Equipo> mostrarEquipo() {//Falta terminar.
+//        
+//        ArrayList<Equipo> equipos = new ArrayList<>();
+//        String sql = "SELECT miembro.apellido, miembro.nombre FROM miembro, equipo, equipoMiembros WHERE ?";
+//        Equipo equipo = null;
+//        
+//        try {
+//            PreparedStatement ps = con.prepareStatement(sql);
+//            
+//            ps.setInt(1, 1);
+//            
+//            ResultSet rs = ps.executeQuery();
+//
+//            if (rs.next()) {//Id_Proyecto, Nombre, Fecha_Creacion, Estado.
+//                do {
+//                    equipo = new Equipo();
+//
+//                    equipo.setId_Proyecto(rs.getInt("Id_Proyecto"));
+//                    equipo.setNombre(rs.getString("Nombre"));
+//                    equipo.setFechaCreacion(rs.getDate("Fecha_Creacion").toLocalDate());
+//                    equipo.setEstado(rs.getBoolean("Estado"));
+//                    equipos.add(equipo);
+//                } while (rs.next());
+//            } else {
+//                System.out.println("Equipo no encontrado.");
+//            }
+//            ps.close();
+//            
+//        } catch (SQLException ex) {
+//            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Equipo " + ex.getMessage());
+//        }
+//        
+//        return equipos;
+//    }
+    
+    public ArrayList<Equipo> mostrarEquipo() {
+        
+        ArrayList<Equipo> equipo = new ArrayList<>();
+        String sql = "SELECT * FROM `equipo` WHERE ?;";
+        
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1,1);
+            ps.executeUpdate();
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                do{
+                    Equipo equip = new Equipo();
+                    equip.setNombre(rs.getString(3));
+                    equip.setId_Equipo(rs.getInt(2));
+                    equipo.add(equip);
+                    
+                }while(rs.next());
+                
+            }else{
+               JOptionPane.showMessageDialog(null, "No existe el Equipo."); 
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Equipo " + ex.getMessage());
+        }
+        
+        
+        
+        return equipo;
+    }
+    //Metodo nuevo agregado para crear Vista Asignar Tarea.    
+    public  ArrayList<Equipo> consultarEquipoProyecto(String nombre){
+         
+        ArrayList<Equipo> equipo = new ArrayList<>();
+        
+        String sql="SELECT equipo.nombre FROM proyecto,equipo WHERE proyecto.Nombre = ? AND proyecto.Id_Proyecto = equipo.Id_Proyecto;";
+        
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, nombre);
+            ps.executeUpdate();//ejecuta la consulta
+            ResultSet rs = ps.executeQuery();//devuelve la consulta.
+            if(rs.next()){
+                do{
+                    Equipo equip = new Equipo();
+                    equip.setNombre(rs.getString(1));
+                    equipo.add(equip);//Lo guardo en el arrayList.
+                    
+                }while(rs.next());
+                
+            }else{
+               JOptionPane.showMessageDialog(null, "No existe Equipo en este Proyecto"); 
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Equipo " + ex.getMessage());
+        }
+          return equipo;
     }
 
 }

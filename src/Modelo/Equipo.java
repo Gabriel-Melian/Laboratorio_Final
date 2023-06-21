@@ -75,7 +75,7 @@ public class Equipo {
 
     @Override
     public String toString() {
-        return "~Equipo~\n" + "Id_Proyecto: " + id_Proyecto + " |Id_Equipo: " + id_Equipo + " |nombre: " + nombre + " |Fecha de Creacion: " + FechaCreacion + " |Estado: " + estado;
+        return nombre;
     }
     
     

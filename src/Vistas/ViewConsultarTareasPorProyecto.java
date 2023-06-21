@@ -5,14 +5,25 @@
  */
 package Vistas;
 
+import java.util.ArrayList;
+import Modelo.*;
+import Control.*;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author jesim
  */
 public class ViewConsultarTareasPorProyecto extends javax.swing.JInternalFrame {
         
+    private TareaData td = new TareaData();
+    private ProyectoData pd = new ProyectoData();
+    private DefaultTableModel modelo = new DefaultTableModel();
+    
     public ViewConsultarTareasPorProyecto() {
         initComponents();
+        cargarProyectos();
+        armarCabecera();
+        llenarTabla();
     }
 
     /**
@@ -30,10 +41,10 @@ public class ViewConsultarTareasPorProyecto extends javax.swing.JInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtTablaTareas = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jbSalir = new javax.swing.JButton();
         jbActualizar = new javax.swing.JButton();
 
@@ -54,8 +65,6 @@ public class ViewConsultarTareasPorProyecto extends javax.swing.JInternalFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("Lista de Proyectos:");
 
-        jComboBox2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
         jtTablaTareas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -72,6 +81,12 @@ public class ViewConsultarTareasPorProyecto extends javax.swing.JInternalFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("Tareas");
 
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -82,21 +97,23 @@ public class ViewConsultarTareasPorProyecto extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(178, 178, 178)
-                        .addComponent(jLabel2)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(47, 47, 47)
+                                .addComponent(jLabel2))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(36, 36, 36)
+                .addGap(26, 26, 26)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -209,9 +226,13 @@ public class ViewConsultarTareasPorProyecto extends javax.swing.JInternalFrame {
       //jtTablaTareas.setText("");
     }//GEN-LAST:event_jbActualizarActionPerformed
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<Proyecto> jComboBox1;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -224,4 +245,52 @@ public class ViewConsultarTareasPorProyecto extends javax.swing.JInternalFrame {
     private javax.swing.JButton jbSalir;
     private javax.swing.JTable jtTablaTareas;
     // End of variables declaration//GEN-END:variables
+    
+    private void cargarProyectos() {
+        ArrayList<Proyecto> proyectos = pd.consultarProyectos();
+        
+        for (Proyecto aux : proyectos) {
+            jComboBox1.addItem(aux);
+        }
+    }
+
+    private void armarCabecera() {
+        
+        ArrayList<Object> titulos = new ArrayList();
+        
+        titulos.add("Nombre");
+        titulos.add("Fecha Creacion");
+        titulos.add("Fecha Cierre");
+        titulos.add("ID Miembro");
+        
+        for (Object tit : titulos) {
+            modelo.addColumn(tit);
+        }
+        jtTablaTareas.setModel(modelo);
+    }
+    
+    private void llenarTabla() {
+        
+        borrarFila();
+        Proyecto proyectoSelec = (Proyecto) jComboBox1.getSelectedItem();
+        
+        ArrayList<Tarea> lista = td.consultarTareas(proyectoSelec.getNombre());
+        
+        for (Tarea aux : lista) {
+            modelo.addRow(new Object []{aux.getNombre(),aux.getFechaCreacion(),aux.getFechaCierre(),aux.getId_MiembroEq()});
+        }
+        
+    }
+    
+    private void borrarFila() {
+        
+        int filas = modelo.getRowCount() - 1;
+        
+        for (int i=filas; i>=0; i--) {
+            
+            modelo.removeRow(i);
+            
+        }
+    }
+    
 }
